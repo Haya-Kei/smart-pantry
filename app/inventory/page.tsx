@@ -215,11 +215,15 @@ export default function InventoryPage() {
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                   {nutritionInfo.image_url && (
-                                    <img
-                                      src={nutritionInfo.image_url}
-                                      alt={nutritionInfo.product_name}
-                                      className="w-full h-auto rounded-lg mb-4"
-                                    />
+                                    <div className="relative w-full aspect-square mb-4">
+                                      <Image
+                                        src={nutritionInfo.image_url}
+                                        alt={nutritionInfo.product_name}
+                                        fill
+                                        className="object-contain rounded-lg"
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                      />
+                                    </div>
                                   )}
                                   <div className="space-y-2">
                                     <p><strong>Brand:</strong> {nutritionInfo.brand || "N/A"}</p>
