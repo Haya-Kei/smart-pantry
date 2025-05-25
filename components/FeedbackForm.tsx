@@ -11,12 +11,20 @@ interface Props {
   schema: Schema
 }
 
-export default function FeedbackForm({ schema }: Props) {
-  const { register, handleSubmit } = useForm()
+interface FormData {
+  [key: string]: string | File | undefined;
+}
 
-  const onSubmit = async (data: any) => {
+export default function FeedbackForm({ schema }: Props) {
+  const { register, handleSubmit } = useForm<FormData>()
+
+  const onSubmit = async (data: FormData) => {
     const form = new FormData()
-    Object.entries(data).forEach(([k, v]) => form.append(k, v as any))
+    Object.entries(data).forEach(([k, v]) => {
+      if (v !== undefined) {
+        form.append(k, v as string | Blob)
+      }
+    })
     await fetch('/submit-feedback', {
       method: 'POST',
       body: form,

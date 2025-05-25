@@ -1,55 +1,72 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function GroceryList() {
+function GroceryListContent() {
   const searchParams = useSearchParams();
-  const [groceryList, setGroceryList] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
+  const list = searchParams.get("list");
+  const error = searchParams.get("error");
 
-  useEffect(() => {
-    const list = searchParams.get("list");
-    const error = searchParams.get("error");
-    
-    if (list) {
-      setGroceryList(decodeURIComponent(list));
-    }
-    if (error) {
-      setError(decodeURIComponent(error));
-    }
-  }, [searchParams]);
+  if (error) {
+    return (
+      <div className="container max-w-2xl py-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl text-destructive">Error</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>{error}</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!list) {
+    return (
+      <div className="container max-w-2xl py-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">No List Generated</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Please generate a grocery list first.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <Card className="max-w-4xl mx-auto">
+    <div className="container max-w-2xl py-8">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Smart Pantry Grocery List
-          </CardTitle>
+          <CardTitle className="text-2xl">Generated Grocery List</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            {error && (
-              <div className="text-red-500 text-center p-4 bg-red-50 rounded-lg">
-                {error}
-              </div>
-            )}
-
-            {groceryList && (
-              <div className="prose max-w-none">
-                <div
-                  className="whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{
-                    __html: groceryList.replace(/\n/g, "<br />"),
-                  }}
-                />
-              </div>
-            )}
-          </div>
+          <div className="whitespace-pre-wrap">{decodeURIComponent(list)}</div>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function GroceryListPage() {
+  return (
+    <Suspense fallback={
+      <div className="container max-w-2xl py-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Loading...</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Loading grocery list...</p>
+          </CardContent>
+        </Card>
+      </div>
+    }>
+      <GroceryListContent />
+    </Suspense>
   );
 } 
