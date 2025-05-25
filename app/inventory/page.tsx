@@ -83,7 +83,7 @@ export default function InventoryPage() {
 
   const fetchNutrition = async (itemName: string) => {
     try {
-      const response = await fetch(`/nutrition/${encodeURIComponent(itemName)}`);
+      const response = await fetch(`/api/nutrition/${encodeURIComponent(itemName)}`);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.details || "Failed to fetch nutrition info");
@@ -213,25 +213,7 @@ export default function InventoryPage() {
                             </DialogHeader>
                             {nutritionInfo && selectedItem === item.item && (
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                  {nutritionInfo.image_url && (
-                                    <div className="relative w-full aspect-square mb-4">
-                                      <Image
-                                        src={nutritionInfo.image_url}
-                                        alt={nutritionInfo.product_name}
-                                        fill
-                                        className="object-contain rounded-lg"
-                                        sizes="(max-width: 768px) 100vw, 50vw"
-                                      />
-                                    </div>
-                                  )}
-                                  <div className="space-y-2">
-                                    <p><strong>Brand:</strong> {nutritionInfo.brand || "N/A"}</p>
-                                    <p><strong>NutriScore:</strong> {nutritionInfo.nutriscore || "N/A"}</p>
-                                    <p><strong>Processing Level:</strong> NOVA {nutritionInfo.nova_group || "N/A"}</p>
-                                    <p><strong>Serving Size:</strong> {nutritionInfo.serving_size || "100g"}</p>
-                                  </div>
-                                </div>
+                                
                                 <div>
                                   <h4 className="text-lg font-semibold mb-2">
                                     {nutritionInfo.product_name || item.item}
