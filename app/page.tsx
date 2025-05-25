@@ -66,6 +66,9 @@ export default function Home() {
               Recipe Maker
             </Button>
           </Link>
+          <Link href="/inventory">
+            <Button className="w-full">View Inventory</Button>
+          </Link>
           <Button
             className="w-full h-12 sm:h-14 text-base sm:text-lg"
             size="lg"
