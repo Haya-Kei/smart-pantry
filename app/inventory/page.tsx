@@ -240,6 +240,17 @@ export default function InventoryPage() {
                                     ))}
                                   </div>
                                 </div>
+
+                                <div className="relative w-full aspect-square mb-4">
+                                  <Image
+                                    src={nutritionInfo.image_url || `https://via.placeholder.com/300?text=${encodeURIComponent(item.item)}`}
+                                    alt={nutritionInfo.product_name || item.item}
+                                    fill
+                                    className="object-contain rounded-lg"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority
+                                  />
+                                </div>
                               </div>
                             )}
                           </DialogContent>
